@@ -64,8 +64,11 @@ public MRESReturn Detour_SetValue(Handle hParams) {
     PrintToChatAll("(string) cvar = %s", szCvar);
 
     // Get value
+    char szParam3[128];
+    DHookGetParamString(hParams, 3, szParam3, sizeof(szParam3));
     int iParam3 = DHookGetParam(hParams, 3);
     PrintToChatAll("(int) value = %i", iParam3);
+    PrintToChatAll("(string) value = %s", szParam3);
 
     PrintToChatAll("---------------------------------------------------------------------");
     return MRES_Supercede;
