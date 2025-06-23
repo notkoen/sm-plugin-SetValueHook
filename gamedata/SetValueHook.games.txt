@@ -20,7 +20,7 @@
                 "this"          "ignore"
                 "arguments"
                 {
-                    "handle"
+                    "handle" // <- This is not correct. It's not a charptr
                     {
                         "type"  "charptr"
                     }
@@ -28,7 +28,7 @@
                     {
                         "type"  "charptr"
                     }
-                    "value"
+                    "value" // <- This can be anything. Might have to view it as pointer?
                     {
                         "type"  "charptr"
                     }
