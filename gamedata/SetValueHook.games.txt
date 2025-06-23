@@ -20,17 +20,17 @@
                 "this"          "ignore"
                 "arguments"
                 {
-                    "handle" // <- This is not correct. It's not a charptr
+                    "unknown"
                     {
-                        "type"  "charptr"
+                        "type"  "int"
                     }
                     "cvar"
                     {
                         "type"  "charptr"
                     }
-                    "value" // <- This can be anything. Might have to view it as pointer?
+                    "value"
                     {
-                        "type"  "charptr"
+                        "type"  "int"
                     }
                 }
             }

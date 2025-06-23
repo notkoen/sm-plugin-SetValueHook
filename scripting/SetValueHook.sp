@@ -47,48 +47,26 @@ public MRESReturn Detour_SetValue(Handle hParams) {
     // From https://developer.valvesoftware.com/wiki/Team_Fortress_2/Scripting/Script_Functions
     // void SetValue(string name, any value)
 
-    // /!\ NOTE: The "SetValue" hook from IDA shows there's actually 3 parameters:
-    //           1. (unknown), 2. string, 3. any
-    //           Issue right now is we do not know how to get "any" parameter.
+    // /!\ NOTE:
+    // The "SetValue" hook from IDA shows there's actually 3 parameters
+    // CScriptConvarAccessor::SetValue(int, char *, int)
+    // I would assume first int is the instance
+
     PrintToChatAll("-------------------------[ Detour_SetValue ]-------------------------");
+
+    // Get first unknown param
+    // int iParam1 = DHookGetParam(hParams, 1);
+    // PrintToChatAll("unknown param 1 = %d", iParam1);
 
     // Get cvar name
     char szCvar[128];
     DHookGetParamString(hParams, 2, szCvar, sizeof(szCvar));
-    PrintToChatAll("string cvar = %s", szCvar);
+    PrintToChatAll("(string) cvar = %s", szCvar);
 
-    // Because the value can be multiple data types, we need to do this shit
-    // EDIT: The below code doesn't work.
-    char szValue[64] = "";
-    DHookGetParamString(hParams, 3, szValue, sizeof(szValue));
-    if (strcmp(szValue, "")) {
-        PrintToChatAll("any value = %s (string)", szValue);
-        PrintToChatAll("-------------------------------------------------------------------------");
-        return MRES_Supercede;
-    }
+    // Get value
+    int iParam3 = DHookGetParam(hParams, 3);
+    PrintToChatAll("(int) value = %i", iParam3);
 
-    bool bValue = DHookGetParam(hParams, 3);
-    if (bValue || !bValue) {
-        PrintToChatAll("any value = %b (bool)", bValue);
-        PrintToChatAll("-------------------------------------------------------------------------");
-        return MRES_Supercede;
-    }
-
-    float flValue = DHookGetParam(hParams, 3);
-    if (flValue) {
-        PrintToChatAll("any value = %.2f (float)", flValue);
-        PrintToChatAll("-------------------------------------------------------------------------");
-        return MRES_Supercede;
-    }
-
-    int iValue = DHookGetParam(hParams, 3);
-    if (iValue) {
-        PrintToChatAll("any value = %d (int)", iValue);
-        PrintToChatAll("-------------------------------------------------------------------------");
-        return MRES_Supercede;
-    }
-
-    PrintToChatAll("[SetValueHook] ERROR - Detour_SetValue param 2 returned invalid type?");
-    PrintToChatAll("-------------------------------------------------------------------------");
+    PrintToChatAll("---------------------------------------------------------------------");
     return MRES_Supercede;
 }
