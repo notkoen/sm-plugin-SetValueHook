@@ -1,0 +1,39 @@
+"Games"
+{
+    "cstrike"
+    {
+        "Signatures"
+        {
+            "SetValue"
+            {
+                "library"       "server"
+                "linux"         "@_ZN21CScriptConvarAccessor8SetValueEPKc12CVariantBaseI24CVariantDefaultAllocatorE"
+            }
+        }
+        "Functions"
+        {
+            "SetValue"
+            {
+                "signature"     "SetValue"
+                "callconv"      "cdecl"
+                "return"        "void"
+                "this"          "ignore"
+                "arguments"
+                {
+                    "handle"
+                    {
+                        "type"  "charptr"
+                    }
+                    "cvar"
+                    {
+                        "type"  "charptr"
+                    }
+                    "value"
+                    {
+                        "type"  "charptr"
+                    }
+                }
+            }
+        }
+    }
+}
