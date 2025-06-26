@@ -15,22 +15,17 @@
             "SetValue"
             {
                 "signature"     "SetValue"
-                "callconv"      "cdecl"
+                "callconv"      "thiscall"
                 "return"        "void"
-                "this"          "ignore"
                 "arguments"
                 {
-                    "unknown"
-                    {
-                        "type"  "int"
-                    }
                     "cvar"
                     {
                         "type"  "charptr"
                     }
                     "value"
                     {
-                        "type"  "int"
+                        "type"  "objectptr"
                     }
                 }
             }
