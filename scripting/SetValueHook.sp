@@ -14,7 +14,7 @@ public Plugin myinfo = {
     name = "SetValue Vscript Hook",
     author = ".Rushaway, koen",
     description = "Proof of concept plugin for hooking \"SetValue\" vscript function for CS:S",
-    version = "1.0",
+    version = "1.0.1",
     url = "https://github.com/notkoen"
 };
 
@@ -83,8 +83,8 @@ public MRESReturn Detour_SetValue(DHookParam hParams) {
         return MRES_Ignored;
     }
 
-    PrintToChatAll("-------------------------[ Detour_SetValue ]-------------------------");
-    PrintToChatAll("Cvar: %s", szCvar);
+    PrintToChatAll("[+] POC: Vscript SetValue");
+    PrintToChatAll("[+] Cvar: %s", szCvar);
 
     // Read type from offset +8 (based on assembly: movzx eax, word ptr [edi+8])
     int iType = LoadFromAddress(pVariant + view_as<Address>(8), NumberType_Int16);
@@ -95,16 +95,13 @@ public MRESReturn Detour_SetValue(DHookParam hParams) {
     // Parse value based on type
     switch (iType) {
         case FIELD_INTEGER: {
-            PrintToChatAll("Type: INTEGER (ID: %d)", iType);
-            PrintToChatAll("Value: %d", iRawValue);
+            PrintToChatAll("[+] Value: %d (int)", iRawValue);
         }
         case FIELD_FLOAT: {
-            PrintToChatAll("Type: FLOAT (ID: %d)", iType);
             float fValue = view_as<float>(iRawValue);
-            PrintToChatAll("Value: %f", fValue);
+            PrintToChatAll("[+] Value: %f (float)", fValue);
         }
         case FIELD_CSTRING: {
-            PrintToChatAll("Type: STRING (ID: %d)", iType);
             // For strings, iRawValue is a pointer to the string
             if (iRawValue != 0) {
                 char szStringValue[256];
@@ -131,19 +128,18 @@ public MRESReturn Detour_SetValue(DHookParam hParams) {
                 szStringValue[sizeof(szStringValue) - 1] = '\0';
 
                 if (bSuccess && strlen(szStringValue) > 0)
-                    PrintToChatAll("Value: %s", szStringValue);
+                    PrintToChatAll("[+] Value: %s (string)", szStringValue);
                 else
-                    PrintToChatAll("Value: <invalid string at 0x%08X>", iRawValue);
+                    PrintToChatAll("[+] Value: <invalid string at 0x%08X>", iRawValue);
             } else
-                PrintToChatAll("Value: <null string>");
+                PrintToChatAll("[+] Value: <null string>");
         }
         default: {
             // Unknown or unsupported type - display raw data for debugging
-            PrintToChatAll("Type: UNKNOWN (%d)", iType);
-            PrintToChatAll("Raw value: 0x%08X", iRawValue);
+            PrintToChatAll("[+] Type: UNKNOWN (%d)", iType);
+            PrintToChatAll("[+] Raw value: 0x%08X", iRawValue);
         }
     }
 
-    PrintToChatAll("---------------------------------------------------------------------");
     return MRES_Ignored;
 }
