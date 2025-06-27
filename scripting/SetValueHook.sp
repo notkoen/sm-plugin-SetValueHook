@@ -60,13 +60,13 @@ public void OnPluginEnd() {
 /**
  * Detour callback for CScriptConvarAccessor::SetValue
  * From https://developer.valvesoftware.com/wiki/Team_Fortress_2/Scripting/Script_Functions
- * 
+ *
  * Original C++ signature:
  * void CScriptConvarAccessor::SetValue(const char *cvar, ScriptVariant_t value)
- * 
+ *
  * Compiled signature (with implicit 'this' pointer):
  * CScriptConvarAccessor::SetValue(this*, const char*, ScriptVariant_t)
- * 
+ *
  * @param hParams   DHooks parameter handle
  * @return          MRES_Handled to block original execution, MRES_Ignored to continue
  */
@@ -93,7 +93,7 @@ public MRESReturn Detour_SetValue(Handle hParams) {
     int iRawValue = LoadFromAddress(pVariant, NumberType_Int32);
 
     // Parse value based on type
-    switch(iType) {
+    switch (iType) {
         case FIELD_INTEGER: {
             PrintToChatAll("Type: INTEGER (ID: %d)", iType);
             PrintToChatAll("Value: %d", iRawValue);
@@ -120,6 +120,7 @@ public MRESReturn Detour_SetValue(Handle hParams) {
                         bSuccess = true;
                         break;
                     }
+
                     if (iByte < 32 || iByte > 126) {
                         // Invalid character, stop reading to prevent corruption
                         szStringValue[i] = '\0';
@@ -128,15 +129,13 @@ public MRESReturn Detour_SetValue(Handle hParams) {
                     szStringValue[i] = iByte;
                 }
                 szStringValue[sizeof(szStringValue) - 1] = '\0';
-                
-                if (bSuccess && strlen(szStringValue) > 0) {
+
+                if (bSuccess && strlen(szStringValue) > 0)
                     PrintToChatAll("Value: %s", szStringValue);
-                } else {
+                else
                     PrintToChatAll("Value: <invalid string at 0x%08X>", iRawValue);
-                }
-            } else {
+            } else
                 PrintToChatAll("Value: <null string>");
-            }
         }
         default: {
             // Unknown or unsupported type - display raw data for debugging
