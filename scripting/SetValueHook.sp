@@ -70,14 +70,14 @@ public void OnPluginEnd() {
  * @param hParams   DHooks parameter handle
  * @return          MRES_Handled to block original execution, MRES_Ignored to continue
  */
-public MRESReturn Detour_SetValue(Handle hParams) {
+public MRESReturn Detour_SetValue(DHookParam hParams) {
     // Extract ConVar name from first parameter (const char *cvar)
     char szCvar[128];
-    DHookGetParamString(hParams, 1, szCvar, sizeof(szCvar));
+    hParams.GetString(1, szCvar, sizeof(szCvar));
 
     // Get address of ScriptVariant_t structure (second parameter)
     // This structure contains both the type and value data
-    Address pVariant = DHookGetParamAddress(hParams, 2);
+    Address pVariant = hParams.GetAddress(2);
     if (pVariant == Address_Null) {
         LogError("[SetValueHook] Failed to get ScriptVariant_t address!");
         return MRES_Ignored;
